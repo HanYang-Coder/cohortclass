@@ -43,7 +43,24 @@ They are executed using *undo logging*, with the log content (on disk) below
 11. <T3, B, XXX>
 ```
 
+Q 1.1
+```
+1.  <T1, BEGIN>​
+2.  <T1, A, 0>​
+3.  <T1, B, 0>​
+4.  <T1, COMMIT>​
+5.  <T2, BEGIN>​
+6.  <T2, A, 10>​
+7.  <T2, C, 0>​
+8.  <T2, A, 40>​
+9.  <T2, COMMIT>​
+10. <T3, BEGIN>​
+11. <T3, B, 20>
+```
 
+Q 1.2
+i) A=50, B=20, C=30
+ii) A=10, B=20, C=0
 
 * Question 1.1 - Fill in the `XXX` in the log.
 * Question 1.2 - The system crashes and recovers. What are values of A,B,C on disk after recovery,
@@ -85,6 +102,32 @@ They are executed using *redo logging*, with the log content (on disk) above​
 10. <T3, BEGIN>​
 11. <T3, B, XXX>​
 ```
+
+Q 2.1
+```
+1.  <T1, BEGIN>​
+2.  <T1, A, 10>​
+3.  <T1, B, 20>​
+4.  <T1, COMMIT>​
+5.  <T2, BEGIN>​
+6.  <T2, A, 40>​
+7.  <T2, C, 30>​
+8.  <T2, A, 50>​
+9.  <T2, COMMIT>​
+10. <T3, BEGIN>​
+11. <T3, B, 75>​
+```
+
+Q 2.2
+i) A={0, 10, 50}
+B={0, 20}
+C={0, 30}
+
+ii) A=0, B=0, C=0
+
+Q 2.3
+i) 50, 20, 30
+ii) 10, 20, 0
 
 * Question 2.1 - Fill in the `XXX` in the log.
 * Question 2.2 - The system crashes. What are values of A,B,C on disk when the crash happened,
@@ -132,6 +175,9 @@ They are executed using *redo logging*, with non-quiescent checkpoints.
 12. <T3, BEGIN>​
 13. <T3, B, 75>​
 ```
+
+
+
 What can you say about values of A,B,C on disk when the crash happened, and:​
 * The log on disk contains line 1-7.​
 * The log on disk contains line 1-10.
@@ -242,6 +288,12 @@ A schedule $X$ is conflict serialzable if its precendence graph is acyclic.
 
 Given the schedule for T1,T2,T3 above, is this execution conflict serializable?​
 
+T1: R(A)<T2: W(A)
+T1: W(A)<T2: W(A)
+T1: R(B)<T2: W(B)
+T3: R(C)<T2: W(C)
+
+Yes the execution is conflict serializable.
 
 ## Exercise 7 
 

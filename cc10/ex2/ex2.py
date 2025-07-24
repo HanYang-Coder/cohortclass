@@ -1,9 +1,9 @@
-[from mapreduce import *
+from mapreduce import *
 
 # fix path if needed
 import os
 print(os.getcwd())
-dir = '/Users/dorien_herremans/Dropbox/DoBrain/AC/Courses/big data 2023/big data 2023/lab/lab10/ex2/'
+dir = 'C:/Documents/SUTD/Term 5/Database/cohortclass/cc10/ex2/'
 
 def read_db(filename):
     db = []
@@ -21,18 +21,28 @@ test_db = read_db(dir + "data/price.csv")
 
 # result = []
 
-# mapper: 
-def m(line):
-
-    return
+# mapper:
+# input: String, pId, sId, price 1,6,997,70
+# output: (supplier, price) pairs
+def mapper(line):
+    # print(line)
+    arr=line.strip().split(',')
+    pId, sId, price = arr
+    return (sId, float(price))
 
 # reducer: 
-def r(p):
-    
-    return 
+def reducer(p):
+    # print(p)
+    sId, price_list = p
+    avg_price = sum(price_list) / len(price_list)
 
-m_out  = map(m, test_db)
-result = reduceByKey2(r,m_out)
+    return (sId, avg_price)
+
+mapper_out  = map(mapper, test_db)
+# you can only iterate an iterator once
+# print(list(mapper_out))
+print(mapper_out)
+result = reduceByKey2(reducer,mapper_out)
 
 # print the results
 for supplier,avg_price in result:
